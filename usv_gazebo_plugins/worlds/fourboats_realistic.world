@@ -34,7 +34,7 @@
           <period>4.0</period>
           <number>3</number>
           <scale>1.5</scale>
-          <gain>0.4</gain>
+          <gain>0.1</gain>
           <direction>-0.1 0.9</direction>
           <angle>0.4</angle>
           <tau>2.0</tau>
@@ -55,7 +55,7 @@
               <period>4.0</period>
               <number>3</number>
               <scale>1.5</scale>
-              <gain>0.4</gain>
+              <gain>0.1</gain>
               <direction>-0.1 0.9</direction>
               <angle>0.4</angle>
               <tau>2.0</tau>
