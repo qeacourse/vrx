@@ -1,4 +1,4 @@
-function [thetas, angular_velocities] = getAVSExperimental(n)
+function [thetas, angular_velocities] = getAVSExperimental(n,useGreensTheorem)
 sub = rossubscriber('/gazebo/model_states');
 svc = rossvcclient('gazebo/set_model_state');
 thetas = linspace(0,180,500);
@@ -20,7 +20,6 @@ for theta = thetas
     angular_velocities(end+1) = -tiltingSpeed;
     [theta tiltingSpeed]
 end
-thetas = linspace(0,120,500);
 figure;
 plot(thetas,angular_velocities);
 xlabel('heel angle (degrees)');

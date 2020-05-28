@@ -1,8 +1,12 @@
-function [torque,d] = getWaterline(n,theta)
-% define the size and displacement of the boat
-L = 1;%m
-D = 0.5;%m
-W = D^(1/n)*2;%m
+function [torque,d] = getWaterline(theta,L,n,D,W)
+if nargin < 5
+    % define the size and displacement of the boat
+    L = 0.6;%m
+    D = 0.5;%m
+    W = 1;%m
+    n = 2;
+end
+
 % define a grid of NxN points
 N = 1000;
 y_vals = linspace(-W-D,W+D,N);
@@ -15,7 +19,7 @@ da = dy.*dz;
 
 % find the com;
 [ycom,zcom,area] = cob(y,z,n,0,D,da,D,W);
-mass = area*1000/4;%Kg
+mass = area*L*1000/4;%Kg
 
 % define the direction of gravity
 down = [0, 0, -1];
@@ -67,9 +71,7 @@ aboveHullGrid = zBoatFrame > hullBoatFrame;
 end
 
 function belowDeckGrid = belowDeck(y,z,n,D,W,theta)
-% the hull function
-% transform y,z into boat frame by rotating by -theta
-yBoatFrame = y*cosd(-theta) + z*sind(-theta);
+% transform z into boat frame by rotating by -theta
 zBoatFrame = y*sind(theta) + z*cosd(-theta);
 belowDeckGrid = zBoatFrame < D;
 end
