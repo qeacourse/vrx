@@ -1,21 +1,19 @@
 % sorry for lack of comments.
 makePolyBoat = true;
 doSimplify = true;
+% unfortunately, Matlab's patch simplification doesn't always work
+% properly for some shapes (it results in some face normals pointing the
+% wrong way)
+nFaces = 1000; % how many faces do we want to end up with when we do simplification
+gridSize = 101;
+
 if makePolyBoat
     L = 0.6;      % boat length
     W = 1;      % deck width
     D = 0.5;    % deck height
-    n = 0.5;      % shape parameter
-    
-    % Note: for whatever reason MATLAB's patch simplification fails when n
-    % <= 1 (it results in the boat hull not being closed
-    if n <= 1
-        doSimplify = false;
-    end
-    gridSize = 100;
+    n = 1;      % shape parameter
     [X,Y] = meshgrid(linspace(-W/2,W/2,gridSize),linspace(-L/2,L/2,gridSize));
 
-    nFaces = 1000; % how many faces do we want to end up with when we do simplification
     stl_file = ['shape_',num2str(n),'_boat.stl'];
     Zhull = D*abs(2*X/W).^n;
     Zdeck = D*ones(size(X));
@@ -39,7 +37,6 @@ else
     nFaces = 1000;
     W = 3;
     L = 3;
-    gridSize = 100;
     [X,Y] = meshgrid(linspace(-W/2,W/2,gridSize),linspace(-L/2,L/2,gridSize));
     Zhull = exp(-X.^2-Y.^2);
     % note: boat might be natural in the other orientation (flip z-axiss)
@@ -57,11 +54,10 @@ figure;
 % alphaShape might be needed for non-convex (need to fill all sides in that
 % case
 shp = alphaShape(Xall,Yall,Zall);
-% usually the default value of alpha is a bit too small
-shp.Alpha = shp.Alpha*2;
+% usually the default value of alpha is a bit too small, but not always.
+% this might need to be adjusted on a boat, by boat basis
+shp.Alpha = shp.Alpha*1.1;
 p = plot(shp);
-p.FaceColor = 'red';
-p.EdgeColor = 'none';
 daspect([1 1 1])
 view(3);
 axis tight;
@@ -69,6 +65,26 @@ axis tight;
 % one in meshlab (sometimes the faces seem to face inward rather than
 % outward, and it doesn't work on n <= 1 for the polyboat)
 if doSimplify
-    reducepatch(p, nFaces);
+    reducepatch(p, nFaces, 'fast');
+    % sometimes reducepatch gives triangles with 0 area.  Find these bad
+    % triangles and get rid of them (they cause issues in some of the tools
+    % we use
+    shouldKeep = zeros(size(p.Faces,1),1);
+    for i = 1 : size(p.Faces,1)
+        v1 = p.Vertices(p.Faces(i,1),:);
+        v2 = p.Vertices(p.Faces(i,2),:);
+        v3 = p.Vertices(p.Faces(i,3),:);
+
+        shouldKeep(i) = norm(cross(v2-v1,v3-v1)) > 0;
+    end
+
+    p.Faces = p.Faces(shouldKeep==1,:);
 end
+p.FaceColor = 'red';
+p.BackFaceLighting = 'unlit';
+p.EdgeColor = 'none';
+hold on;
+scatter3(Xall,Yall,Zall,'b.');
+
+stl_file
 stlwrite(triangulation(p.Faces,p.Vertices),stl_file)
