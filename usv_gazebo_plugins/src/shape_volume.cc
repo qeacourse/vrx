@@ -17,6 +17,9 @@
 
 #include "usv_gazebo_plugins/shape_volume.hh"
 #include "gazebo/common/MeshManager.hh"
+#include <boost/uuid/uuid_generators.hpp>
+#include <boost/lexical_cast.hpp>
+#include <boost/uuid/uuid_io.hpp>
 
 using namespace buoyancy;
 using namespace gazebo;
@@ -91,6 +94,35 @@ ShapeVolumePtr ShapeVolume::makeShape(const sdf::ElementPtr sdf)
     {
       throw ParseException("cylinder", "missing <radius> or <length> element");
     }
+  } else if (sdf->HasElement("polyline")) {
+    auto polylineElem = sdf->GetElement("polyline");
+    if (!polylineElem->HasElement("height"))
+    {
+      throw ParseException("polyline", "missing <height> element");
+    }
+    auto heightElem = polylineElem->GetElement("height");
+    double height = std::stof(heightElem->GetValue()->GetAsString());
+    std::vector<std::vector<ignition::math::Vector2d> > path;
+    std::vector<ignition::math::Vector2d> subpath;
+
+    // TODO: better error handling (e.g., throw error if no points)
+    auto pointElem = polylineElem->GetElement("point");
+    while (pointElem)
+    {
+	double x, y;
+	std::stringstream s(pointElem->GetValue()->GetAsString());
+	s >> x;
+	s >> y;
+	subpath.push_back(ignition::math::Vector2d(x, y));
+	pointElem = pointElem->GetNextElement("point");
+    }
+    path.push_back(subpath);
+    common::MeshManager *meshManager = common::MeshManager::Instance();
+    boost::uuids::uuid uuid = boost::uuids::random_generator()();
+    std::string meshName = boost::lexical_cast<std::string>(uuid);
+    meshManager->CreateExtrudedPolyline(meshName, path, height);
+    const common::Mesh *mesh = common::MeshManager::Instance()->GetMesh(meshName);
+    shape = dynamic_cast<ShapeVolume*>(new PolyhedronVolume(mesh));
   } else if (sdf->HasElement("mesh")) {
     auto meshElem = sdf->GetElement("mesh");
     std::string meshStr = meshElem->Get<std::string>("uri");
