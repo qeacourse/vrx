@@ -1,14 +1,25 @@
-function placeBoat(n, pitchAngle, svc)
+function placeBoat(n, pitchAngle, svc, isPolylineBoat)
     if nargin < 3
         svc = rossvcclient('gazebo/set_model_state');
     end
+    if nargin < 4
+        isPolylineBoat = false;
+    end
     % unfortunately, can't use get_model_state due to mismatched md5 (might
     % need to change to using rostopics or modify the version of ROS)
-    modelname = ['shape_',num2str(n),'_boat'];
+    if isPolylineBoat
+        modelname = ['poly',num2str(n)];
+    else
+        modelname = ['shape_',num2str(n),'_boat'];
+    end
     msg = rosmessage(svc);
     D = 0.5;
     msg.ModelState.ModelName = modelname;
-    quat = eul2quat([0 deg2rad(pitchAngle), 0]);
+    if isPolylineBoat
+        quat = eul2quat([0 deg2rad(pitchAngle) pi/2]);
+    else
+        quat = eul2quat([0 deg2rad(pitchAngle) 0]);
+    end
     msg.ModelState.Pose.Orientation.W = quat(1);
     msg.ModelState.Pose.Orientation.X = quat(2);
     msg.ModelState.Pose.Orientation.Y = quat(3);
