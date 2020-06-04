@@ -7,11 +7,7 @@ function placeBoat(n, pitchAngle, svc, isPolylineBoat)
     end
     % unfortunately, can't use get_model_state due to mismatched md5 (might
     % need to change to using rostopics or modify the version of ROS)
-    if isPolylineBoat
-        modelname = ['poly',num2str(n)];
-    else
-        modelname = ['shape_',num2str(n),'_boat'];
-    end
+    modelname = ['shape_',num2str(n),'_boat'];
     msg = rosmessage(svc);
     D = 0.5;
     msg.ModelState.ModelName = modelname;

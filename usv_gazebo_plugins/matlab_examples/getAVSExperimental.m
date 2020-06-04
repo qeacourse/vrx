@@ -1,11 +1,14 @@
-function [thetas, angular_velocities] = getAVSExperimental(n,useGreensTheorem)
+function [thetas, angular_velocities] = getAVSExperimental(n,useGreensTheorem,isPolyBoat)
+if nargin < 3
+    isPolyBoat = false;
+end
 sub = rossubscriber('/gazebo/model_states');
 svc = rossvcclient('gazebo/set_model_state');
 thetas = linspace(0,180,500);
 angular_velocities = [];
 
 for theta = thetas
-    placeBoat(n,theta,svc);
+    placeBoat(n,theta,svc,isPolyBoat);
     pause(0.1);
     m = sub.LatestMessage;
     % should be consistent order, but just in case
