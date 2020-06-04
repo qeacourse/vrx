@@ -128,7 +128,6 @@ Polyhedron Polyhedron::makeCylinder(double r, double l, int n)
 Polyhedron Polyhedron::makePolyhedron(const common::Mesh* mesh)
 {
   Polyhedron poly;
-  std::cout << "making poly" << std::endl;
   if (mesh->GetSubMeshCount() > 1) {
     std::cerr << "Not sure if code works when there are multiple submeshes" << std::endl;
   }
@@ -137,13 +136,14 @@ Polyhedron Polyhedron::makePolyhedron(const common::Mesh* mesh)
      const common::SubMesh* subMesh = mesh->GetSubMesh(i);
 
      for (unsigned int j = 0; j < subMesh->GetVertexCount(); j++) {
-       poly.vertices.emplace_back(subMesh->Vertex(subMesh->GetIndex(j)));
+       poly.vertices.emplace_back(subMesh->Vertex(j));
      }
-     for (unsigned int j = 0; j < subMesh->GetVertexCount() / 3; j++) {
-       // TODO: something is fishy about the Normal vectors, they don't seem to be perpendicular to the faces
-       poly.faces.emplace_back(Face(j*3, j*3+1, j*3+2));
+     for (unsigned int j = 0; j < subMesh->GetIndexCount() / 3; j++) {
+	 poly.faces.emplace_back(Face(subMesh->GetIndex(j*3),
+				      subMesh->GetIndex(j*3+1),
+				      subMesh->GetIndex(j*3+2)));
      }
-     std::cout << "Copied submesh with n faces: " << subMesh->GetVertexCount()/3 << std::endl;
+     std::cout << "Copied submesh with n faces: " << poly.faces.size() << std::endl;
   }
   std::cout << poly.ComputeFullVolume().volume << std::endl;
   return poly;
