@@ -1,4 +1,4 @@
-function [torque,d] = getWaterLineGreensTheorem(theta, L, y_vals, z_vals)
+function [torque,d] = getWaterLineGreensTheorem(theta, L, y_vals, z_vals, densityRatio)
 if nargin < 4
     % define the size and displacement of the boat
     L = 0.6;%m
@@ -18,10 +18,13 @@ if nargin < 4
     y_vals = [y_vals_hull y_vals_deck];
     z_vals = [z_vals_hull z_vals_deck];
 end
+if nargin < 5
+    densityRatio = 1/4;
+end
 
 % find the com;
 [area,ycom,zcom] = line_integral(y_vals,z_vals);
-mass = area*L*1000/4;%Kg
+mass = area*L*1000*densityRatio;%Kg
 
 % define the direction of gravity
 down = [0, 0, -1];
