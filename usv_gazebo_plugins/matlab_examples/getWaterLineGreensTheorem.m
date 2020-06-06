@@ -1,4 +1,4 @@
-function [torque,d] = getWaterLineGreensTheorem(theta, L, y_vals, z_vals, densityRatio)
+function [torque,d,CoM] = getWaterLineGreensTheorem(theta, L, y_vals, z_vals, densityRatio, ballastLevel)
 if nargin < 4
     % define the size and displacement of the boat
     L = 0.6;%m
@@ -21,10 +21,17 @@ end
 if nargin < 5
     densityRatio = 1/4;
 end
+if nargin < 6
+    ballastLevel = -Inf;
+end
 
-% find the com;
-[area,ycom,zcom] = line_integral(y_vals,z_vals);
-mass = area*L*1000*densityRatio;%Kg
+% find the com; Note: densityRatioWeightedArea is the integral over the
+% cross section weighted by the densityRatio for sections above the
+% ballastlevel and 1.24 for sections below the ballastLevel (1.24 is the
+% ratio of the density of solid PLA to water
+[densityRatioWeightedArea,ycom,zcom] = line_integral(y_vals,z_vals,ballastLevel,densityRatio);
+CoM = [ycom zcom];
+mass = densityRatioWeightedArea*L*1000;%Kg
 
 % define the direction of gravity
 down = [0, 0, -1];
@@ -86,14 +93,25 @@ zz = zcom - sind(theta)*(y-ycom) + cosd(theta)*(z-zcom);
 end
 
 % Use line integrals to compute area and cob
-function [area,ycom,zcom] = line_integral(y,z)
+function [area,ycom,zcom] = line_integral(y,z,ballastLevel,densityRatio)
 % Use Green's theorem to convert the double integrals
 % to a line integral of the form integral f(x) dy. Each
 % quantity has a different integrand.
 dz = diff(z);
-area_term = y(1:end-1).*dz;
-ycom_term = 0.5*y(1:end-1).^2.*dz;
-zcom_term = y(1:end-1).*z(1:end-1).*dz;
+% the densityRatio and ballastLevel should only be supplied when computing
+% a center of mass with an UNROTATED boat
+if nargin < 3
+    density = ones(size(dz));
+else
+    density = densityRatio*ones(size(dz));
+    % if below the ballastLevel, then we assume density ratio of 1.24 below
+    % the ballast level (this is the density ratio of solid PLA to waterr
+    density(z(1:end-1) <= ballastLevel) = 1.24;
+end
+
+area_term = y(1:end-1).*dz.*density;
+ycom_term = 0.5*y(1:end-1).^2.*dz.*density;
+zcom_term = y(1:end-1).*z(1:end-1).*dz.*density;
 area = trapz(area_term);
 ycom = trapz(ycom_term)./area;
 zcom = trapz(zcom_term)./area;
