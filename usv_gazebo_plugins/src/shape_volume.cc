@@ -129,6 +129,8 @@ ShapeVolumePtr ShapeVolume::makeShape(const sdf::ElementPtr sdf)
     meshManager->CreateExtrudedPolyline(meshName, path, height);
     const common::Mesh *mesh = common::MeshManager::Instance()->GetMesh(meshName);
     shape = dynamic_cast<ShapeVolume*>(new PolyhedronVolume(mesh, zShift));
+    // adjust average length
+    shape->averageLength = pow(shape->volume/height,1/2.0);
   } else if (sdf->HasElement("mesh")) {
     auto meshElem = sdf->GetElement("mesh");
     std::string meshStr = meshElem->Get<std::string>("uri");
