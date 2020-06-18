@@ -72,6 +72,12 @@ void BuoyancyObject::Load(const physics::ModelPtr model,
     this->pose = elem->GetElement("pose")->Get<ignition::math::Pose3d>();
   }
 
+  // parse mass (optional)
+  if (elem->HasElement("mass"))
+  {
+    this->mass = elem->GetElement("mass")->Get<double>();
+  }
+
   // parse geometry
   if (elem->HasElement("geometry"))
   {
@@ -175,15 +181,15 @@ void BuoyancyPlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
           // initialize link height velocity
           this->linkHeightDots[linkMap[buoyObj.linkId]] = 0;
         }
-
-        // get mass
-        #if GAZEBO_MAJOR_VERSION >= 8
-          buoyObj.mass = this->linkMap[buoyObj.linkId]->GetInertial()->Mass();
-        #else
-          buoyObj.mass =
-              this->linkMap[buoyObj.linkId]->GetInertial()->GetMass();
-        #endif
-
+        if (buoyObj.mass == 0) {
+          // get mass
+          #if GAZEBO_MAJOR_VERSION >= 8
+            buoyObj.mass = this->linkMap[buoyObj.linkId]->GetInertial()->Mass();
+          #else
+            buoyObj.mass =
+	        this->linkMap[buoyObj.linkId]->GetInertial()->GetMass();
+          #endif
+	}
         // add buoyancy object to list and display stats
         gzmsg << buoyObj.Disp() << std::endl;
         buoyancyObjects.push_back(std::move(buoyObj));

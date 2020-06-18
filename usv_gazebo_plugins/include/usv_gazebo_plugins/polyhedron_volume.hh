@@ -93,7 +93,7 @@ namespace buoyancy
     /// @param vertices: the vertices of the polyhedron
     /// @param faces: the faces of the polyhedron
     /// @return Polyhedron object
-    public: static Polyhedron makePolyhedron(const common::Mesh* mesh);
+    public: static Polyhedron makePolyhedron(const common::Mesh* mesh, double zShift=0.0);
 
     /// \brief Compute full volume and center of buoyancy of the polyhedron
     /// @return Volume object with volume and centroid

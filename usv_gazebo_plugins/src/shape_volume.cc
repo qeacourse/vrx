@@ -96,12 +96,18 @@ ShapeVolumePtr ShapeVolume::makeShape(const sdf::ElementPtr sdf)
     }
   } else if (sdf->HasElement("polyline")) {
     auto polylineElem = sdf->GetElement("polyline");
+    double zShift = 0;
     if (!polylineElem->HasElement("height"))
     {
       throw ParseException("polyline", "missing <height> element");
     }
     auto heightElem = polylineElem->GetElement("height");
     double height = std::stof(heightElem->GetValue()->GetAsString());
+    if (polylineElem->HasElement("zshift"))
+    {
+      auto zShiftElem = polylineElem->GetElement("zshift");
+      zShift = std::stof(zShiftElem->GetValue()->GetAsString());
+    }
     std::vector<std::vector<ignition::math::Vector2d> > path;
     std::vector<ignition::math::Vector2d> subpath;
 
@@ -122,7 +128,7 @@ ShapeVolumePtr ShapeVolume::makeShape(const sdf::ElementPtr sdf)
     std::string meshName = boost::lexical_cast<std::string>(uuid);
     meshManager->CreateExtrudedPolyline(meshName, path, height);
     const common::Mesh *mesh = common::MeshManager::Instance()->GetMesh(meshName);
-    shape = dynamic_cast<ShapeVolume*>(new PolyhedronVolume(mesh));
+    shape = dynamic_cast<ShapeVolume*>(new PolyhedronVolume(mesh, zShift));
   } else if (sdf->HasElement("mesh")) {
     auto meshElem = sdf->GetElement("mesh");
     std::string meshStr = meshElem->Get<std::string>("uri");
@@ -287,8 +293,8 @@ Volume SphereVolume::CalculateVolume(const ignition::math::Pose3d &pose,
 }
 
 /////////////////////////////////////////////////
-PolyhedronVolume::PolyhedronVolume(const common::Mesh* mesh)
-    : polyhedron(Polyhedron::makePolyhedron(mesh))
+PolyhedronVolume::PolyhedronVolume(const common::Mesh* mesh, double zShift)
+    : polyhedron(Polyhedron::makePolyhedron(mesh, zShift))
 {
   type = ShapeType::Polyhedron;
   volume = polyhedron.ComputeFullVolume().volume;

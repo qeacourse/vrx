@@ -125,7 +125,7 @@ Polyhedron Polyhedron::makeCylinder(double r, double l, int n)
 }
 
 //////////////////////////////////////////////////////
-Polyhedron Polyhedron::makePolyhedron(const common::Mesh* mesh)
+Polyhedron Polyhedron::makePolyhedron(const common::Mesh* mesh, double zShift)
 {
   Polyhedron poly;
   if (mesh->GetSubMeshCount() > 1) {
@@ -137,6 +137,7 @@ Polyhedron Polyhedron::makePolyhedron(const common::Mesh* mesh)
 
      for (unsigned int j = 0; j < subMesh->GetVertexCount(); j++) {
        poly.vertices.emplace_back(subMesh->Vertex(j));
+       poly.vertices.back().Z(poly.vertices.back().Z() + zShift);
      }
      for (unsigned int j = 0; j < subMesh->GetIndexCount() / 3; j++) {
 	 poly.faces.emplace_back(Face(subMesh->GetIndex(j*3),

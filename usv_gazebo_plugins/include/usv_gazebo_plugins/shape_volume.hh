@@ -153,7 +153,7 @@ namespace buoyancy
     /// \brief Default constructor
     /// @param r: radius
     /// @param l: length
-    explicit PolyhedronVolume(const common::Mesh* mesh);
+    explicit PolyhedronVolume(const common::Mesh* mesh, double zShift=0.0);
 
     /// \brief Display string for polyhedron shape
     std::string Display() override;
