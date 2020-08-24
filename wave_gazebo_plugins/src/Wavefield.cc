@@ -296,7 +296,7 @@ namespace asv
     this->data->Recalculate();
   }
 
-  void WaveParameters::SetFromSDF(sdf::Element& _sdf)
+  void WaveParameters::SetFromSDF(sdf::v9::Element& _sdf)
   {
     this->data->model = Utilities::SdfParamString(_sdf, "model", "default");
     this->data->number = Utilities::SdfParamSizeT(_sdf, "number", \

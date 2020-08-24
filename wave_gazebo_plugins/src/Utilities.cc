@@ -36,7 +36,7 @@ namespace asv
 
   // This code adapted vmrc/usv_gazebo_plugins/usv_gazebo_dynamics_plugin.cc
   template <typename T>T
-    SdfParam(sdf::Element& _sdf, const std::string &_paramName, \
+    SdfParam(sdf::v9::Element& _sdf, const std::string &_paramName, \
              const T &_defaultVal)
   {
     if (!_sdf.HasElement(_paramName))
@@ -54,37 +54,37 @@ namespace asv
 
   /////////////////////////////////////////////////////////////////////////////
   // Utilities
-  bool Utilities::SdfParamBool(sdf::Element& _sdf,
+  bool Utilities::SdfParamBool(sdf::v9::Element& _sdf,
     const std::string& _paramName, const bool _defaultVal)
   {
     return SdfParam<bool>(_sdf, _paramName, _defaultVal);
   }
 
-  size_t Utilities::SdfParamSizeT(sdf::Element& _sdf,
+  size_t Utilities::SdfParamSizeT(sdf::v9::Element& _sdf,
     const std::string& _paramName, const size_t _defaultVal)
   {
     return SdfParam<double>(_sdf, _paramName, _defaultVal);
   }
 
-  double Utilities::SdfParamDouble(sdf::Element& _sdf,
+  double Utilities::SdfParamDouble(sdf::v9::Element& _sdf,
     const std::string& _paramName, const double _defaultVal)
   {
     return SdfParam<double>(_sdf, _paramName, _defaultVal);
   }
 
-  std::string Utilities::SdfParamString(sdf::Element& _sdf,
+  std::string Utilities::SdfParamString(sdf::v9::Element& _sdf,
     const std::string& _paramName, const std::string &_defaultVal)
   {
     return SdfParam<std::string>(_sdf, _paramName, _defaultVal);
   }
 
-  ignition::math::Vector2d Utilities::SdfParamVector2(sdf::Element& _sdf,
+  ignition::math::Vector2d Utilities::SdfParamVector2(sdf::v9::Element& _sdf,
     const std::string& _paramName, const ignition::math::Vector2d _defaultVal)
   {
     return SdfParam<ignition::math::Vector2d>(_sdf, _paramName, _defaultVal);
   }
 
-  ignition::math::Vector3d Utilities::SdfParamVector3(sdf::Element& _sdf,
+  ignition::math::Vector3d Utilities::SdfParamVector3(sdf::v9::Element& _sdf,
     const std::string& _paramName, const ignition::math::Vector3d _defaultVal)
   {
     return SdfParam<ignition::math::Vector3d>(_sdf, _paramName, _defaultVal);

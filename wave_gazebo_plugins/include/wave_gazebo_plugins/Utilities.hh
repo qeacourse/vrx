@@ -57,7 +57,7 @@ namespace asv
     /// \param[in] _defaultVal  A default value for the parameter.
     /// \return                 The parameter value
     ///                         (or default value if not found).
-    public: static bool SdfParamBool(sdf::Element& _sdf,
+	  public: static bool SdfParamBool(sdf::v9::Element& _sdf,
       const std::string &_paramName, const bool _defaultVal);
 
     /// \brief Extract a named size_t parameter from an SDF element.
@@ -68,7 +68,7 @@ namespace asv
     /// \return                 The parameter value
     ///                         (or default value if not found).
 
-    public: static size_t SdfParamSizeT(sdf::Element& _sdf,
+	  public: static size_t SdfParamSizeT(sdf::v9::Element& _sdf,
       const std::string &_paramName, const size_t _defaultVal);
 
     /// \brief Extract a named double parameter from an SDF element.
@@ -79,7 +79,7 @@ namespace asv
     /// \return                 The parameter value
     ///                         (or default value if not found).
 
-    public: static double SdfParamDouble(sdf::Element& _sdf,
+	  public: static double SdfParamDouble(sdf::v9::Element& _sdf,
       const std::string &_paramName, const double _defaultVal);
 
     /// \brief Extract a named string parameter from an SDF element.
@@ -90,7 +90,7 @@ namespace asv
     /// \return                 The parameter value
     ///                         (or default value if not found).
 
-    public: static std::string SdfParamString(sdf::Element& _sdf,
+	  public: static std::string SdfParamString(sdf::v9::Element& _sdf,
       const std::string &_paramName, const std::string &_defaultVal);
 
     /// \brief Extract a named Vector2 parameter from an SDF element.
@@ -102,7 +102,7 @@ namespace asv
     ///                         (or default value if not found).
 
     public: static ignition::math::Vector2d SdfParamVector2(
-      sdf::Element& _sdf,
+      sdf::v9::Element& _sdf,
       const std::string &_paramName,
       const ignition::math::Vector2d _defaultVal);
 
@@ -114,7 +114,7 @@ namespace asv
     /// \return                 The parameter value
     ///                         (or default value if not found).
 
-    public: static ignition::math::Vector3d SdfParamVector3(sdf::Element& _sdf,
+    public: static ignition::math::Vector3d SdfParamVector3(sdf::v9::Element& _sdf,
       const std::string &_paramName,
       const ignition::math::Vector3d _defaultVal);
   };
