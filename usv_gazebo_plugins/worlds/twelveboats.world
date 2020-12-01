@@ -27,15 +27,19 @@
       <static>true</static>
       <pose>0.8 0.8 0 0 0 0</pose>
       <link name="link">
-        <visual name="visual">
+	      <visual name="visual">
+		      <cast_shadows>false</cast_shadows>
           <geometry>
             <plane>
               <normal>0 0 1</normal>
               <size>20 20</size>
             </plane>
           </geometry>
-          <material>
-            <ambient>0.0 0.0 0.6 1</ambient>
+	  <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/BlueTransparent</name>
+            </script>	
           </material>
         </visual>
       </link>
