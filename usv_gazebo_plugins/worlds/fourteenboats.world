@@ -45,8 +45,7 @@
       </link>
     </model>
     <model name="shape_1_boat">
-	    <!-- AVS is about 92 degrees (as calculated by John's code) -->
-      <pose>-4 -4 0.5 0 0 0</pose>
+      <pose>-2 -4 0.5 0 0 0</pose>
       <static>False</static>
       <link name="link">
         <visual name="visual">
@@ -93,7 +92,7 @@
     </model>
     <model name="shape_2_boat">
 	    <!-- AVS is about 92 degrees (as calculated by John's code) -->
-      <pose>-4 -2 0.5 0 0 0</pose>
+      <pose>-2 -2 0.5 0 0 0</pose>
       <static>False</static>
       <link name="link">
         <visual name="visual">
@@ -139,7 +138,7 @@
       </plugin>
     </model>
     <model name="shape_4_boat">
-      <pose>-4 0 0.5 0 0 0</pose>
+      <pose>-2 0 0.5 0 0 0</pose>
       <static>False</static>
       <link name="link">
         <visual name="visual">
@@ -185,7 +184,7 @@
       </plugin>
     </model>
     <model name="shape_8_boat">
-      <pose>-4 2 0.5 0 0 0</pose>
+      <pose>-2 2 0.5 0 0 0</pose>
       <static>False</static>
       <link name="link">
         <visual name="visual">
@@ -234,7 +233,7 @@
     <!--medium boats-->    
     <model name="shape_1_boat_medium">
 	    <!-- AVS is about 92 degrees (as calculated by John's code) -->
-      <pose>0 -4 0.5 0 0 0</pose>
+      <pose>2 -4 0.5 0 0 0</pose>
       <static>False</static>
       <link name="link">
         <visual name="visual">
@@ -281,7 +280,7 @@
     </model>
     <model name="shape_2_boat_medium">
 	    <!-- AVS is about 92 degrees (as calculated by John's code) -->
-      <pose>0 -2 0.5 0 0 0</pose>
+      <pose>2 -2 0.5 0 0 0</pose>
       <static>False</static>
       <link name="link">
         <visual name="visual">
@@ -327,7 +326,7 @@
       </plugin>
     </model>
     <model name="shape_4_boat_medium">
-      <pose>0 0 0.5 0 0 0</pose>
+      <pose>2 0 0.5 0 0 0</pose>
       <static>False</static>
       <link name="link">
         <visual name="visual">
@@ -373,7 +372,7 @@
       </plugin>
     </model>
     <model name="shape_8_boat_medium">
-      <pose>0 2 0.5 0 0 0</pose>
+      <pose>2 2 0.5 0 0 0</pose>
       <static>False</static>
       <link name="link">
         <visual name="visual">
@@ -422,7 +421,7 @@
     <!--heavy boats-->
     <model name="shape_1_boat_heavy">
 	    <!-- AVS is about 92 degrees (as calculated by John's code) -->
-      <pose>4 -4 0.5 0 0 0</pose>
+      <pose>6 -4 0.5 0 0 0</pose>
       <static>False</static>
       <link name="link">
         <visual name="visual">
@@ -469,7 +468,7 @@
     </model>
     <model name="shape_2_boat_heavy">
 	    <!-- AVS is about 92 degrees (as calculated by John's code) -->
-      <pose>4 -2 0.5 0 0 0</pose>
+      <pose>6 -2 0.5 0 0 0</pose>
       <static>False</static>
       <link name="link">
         <visual name="visual">
@@ -515,7 +514,7 @@
       </plugin>
     </model>
     <model name="shape_4_boat_heavy">
-      <pose>4 0 0.5 0 0 0</pose>
+      <pose>6 0 0.5 0 0 0</pose>
       <static>False</static>
       <link name="link">
         <visual name="visual">
@@ -561,12 +560,12 @@
       </plugin>
     </model>
     <model name="shape_8_boat_heavy">
-      <pose>4 2 0.5 0 0 0</pose>
+      <pose>6 2 0.5 0 0 0</pose>
       <static>False</static>
       <link name="link">
         <visual name="visual">
           <geometry>
-            <mesh>
+		  <mesh>
 		    <uri>model://bod/meshes/shape_8_boat_convex.stl</uri>
             </mesh>
           </geometry>
@@ -607,7 +606,99 @@
       </plugin>
     </model>
     
+    <model name="tall_shape_1_boat">
+      <pose>0 6 0.5 0 0 0</pose>
+      <static>False</static>
+      <link name="link">
+        <visual name="visual">
+          <geometry>
+            <mesh>
+		    <uri>model://bod/meshes/tall_shape_1_boat.stl</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <collision name="collision">
+          <geometry>
+            <mesh>
+		    <uri>model://bod/meshes/tall_shape_1_boat.stl</uri>
+            </mesh>
+          </geometry>
+        </collision>
+        <inertial>
+		<mass>112.4255</mass>
+		<pose>0 0 1.000242 0 0 0</pose>
+          <inertia>
+            <ixx>17.3825</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>18.6945</iyy>
+            <iyz>0</iyz>
+            <izz>8.055</izz>
+          </inertia>
+        </inertial>
+      </link>
+      <plugin filename="libbuoyancy_gazebo_plugin.so" name="BuoyancyPlugin">
+        <fluid_density>1000</fluid_density>
+        <fluid_level>0.0</fluid_level>
+        <linear_drag>5</linear_drag>
+        <angular_drag>2</angular_drag>
+        <buoyancy name="buoyancy">
+          <link_name>link</link_name>
+          <geometry>
+            <mesh>
+		    <uri>model://bod/meshes/tall_shape_1_boat.stl</uri>
+            </mesh>
+          </geometry>
+        </buoyancy>
+      </plugin>
+    </model>
     
+    <model name="tall_shape_8_boat">
+      <pose>4 6 0.5 0 0 0</pose>
+      <static>False</static>
+      <link name="link">
+        <visual name="visual">
+          <geometry>
+            <mesh>
+		    <uri>model://bod/meshes/tall_shape_8_boat.stl</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <collision name="collision">
+          <geometry>
+            <mesh>
+		    <uri>model://bod/meshes/tall_shape_8_boat.stl</uri>
+            </mesh>
+          </geometry>
+        </collision>
+        <inertial>
+		<mass>199.872</mass>
+		<pose>0 0 0.794276 0 0 0</pose>
+          <inertia>
+            <ixx>19.61325</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>49.4385</iyy>
+            <iyz>0</iyz>
+            <izz>41.80925</izz>
+          </inertia>
+        </inertial>
+      </link>
+      <plugin filename="libbuoyancy_gazebo_plugin.so" name="BuoyancyPlugin">
+        <fluid_density>1000</fluid_density>
+        <fluid_level>0.0</fluid_level>
+        <linear_drag>5</linear_drag>
+        <angular_drag>2</angular_drag>
+        <buoyancy name="buoyancy">
+          <link_name>link</link_name>
+          <geometry>
+            <mesh>
+		    <uri>model://bod/meshes/tall_shape_8_boat.stl</uri>
+            </mesh>
+          </geometry>
+        </buoyancy>
+      </plugin>
+    </model>
     <physics type='ode'>
   <max_step_size>0.005000</max_step_size>
   <real_time_factor>1.000000</real_time_factor>
