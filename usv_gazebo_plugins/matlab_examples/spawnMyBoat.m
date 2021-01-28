@@ -12,16 +12,31 @@ if nargin < 1
     Iyz = 0;
     Ixz = 0;
 end
+
 num2strPrecision = 10;
 linearDrag = 2;
 angularDrag = 5;
 
-[~,name,~] = fileparts(stlFileName);
+T = stlread(stlFileName);
+
+biggestDimension = max(max(T.Points) - min(T.Points));
+if biggestDimension > 1.0
+    disp('Autoscaling mesh to units of meters from millimeters.');
+    disp("We're going to need a smaller boat.");
+    T = triangulation(T.ConnectivityList, T.Points/1000);
+end
+if min(T.Points(:,1)) >= 0 | min(T.Points(:,2)) >= 0
+    error('When exporting your STL, make sure to check the option "Do not translate STL output data to positive space."');
+end
+
+[~,name,suffix] = fileparts(stlFileName);
 modelDir = fullfile(tempdir, name);
 mkdir(modelDir);
 meshDir = fullfile(modelDir,'meshes');
 mkdir(meshDir);
-copyfile(stlFileName, meshDir)
+
+updatedMeshFileName = fullfile(meshDir, [name, suffix]);
+stlwrite(T, updatedMeshFileName);
 meshBoatSTLURI = stageMesh(stlFileName);
 doc = com.mathworks.xml.XMLUtils.createDocument('sdf');
 sdfElem = doc.getDocumentElement();
