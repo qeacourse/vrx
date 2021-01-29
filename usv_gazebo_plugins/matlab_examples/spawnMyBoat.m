@@ -38,7 +38,7 @@ mkdir(meshDir);
 
 updatedMeshFileName = fullfile(meshDir, [name, suffix]);
 stlwrite(T, updatedMeshFileName);
-meshBoatSTLURI = stageMesh(stlFileName);
+meshBoatSTLURI = stageMesh([name, suffix]);
 doc = com.mathworks.xml.XMLUtils.createDocument('sdf');
 sdfElem = doc.getDocumentElement();
 sdfElem.setAttribute('version', '1.5');
