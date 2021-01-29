@@ -2,7 +2,7 @@ function spawnMyBoat(stlFileName, mass, centerOfMass, Ixx, Iyy, Izz)
 if nargin < 1
     % this is a tester boat we've used
     stlFileName = '/root/catkin_ws/src/vrx/usv_gazebo_plugins/meshes/boat_parabola.STL';
-    mass = 0.236; % kg
+    mass = 0.417; % kg
     % hacking the center of mass
     centerOfMass = [0, 0, 0.03404]; % x, y, z (meters)
     Ixx = 1.01e-3;
