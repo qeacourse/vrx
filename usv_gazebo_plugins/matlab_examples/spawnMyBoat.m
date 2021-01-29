@@ -4,14 +4,15 @@ if nargin < 1
     stlFileName = 'boat_keel.STL';
     mass = 0.236; % kg
     % hacking the center of mass
-    centerOfMass = [0.101599998772144/2, 0.152400001883507/2, 0.0457]; % x, y, z (meters)
+    centerOfMass = [0, 0, 0.0457]; % x, y, z (meters)
     Ixx = 1.99e-4;
     Iyy = 5.531e-4;
     Izz = 5.589e-4;
-    Ixy = 0;
-    Iyz = 0;
-    Ixz = 0;
 end
+
+Ixy = 0;
+Iyz = 0;
+Ixz = 0;
 
 num2strPrecision = 10;
 linearDrag = 2;
