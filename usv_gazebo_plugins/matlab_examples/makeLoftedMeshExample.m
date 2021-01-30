@@ -17,7 +17,7 @@ z = deckHeight*abs(2*x/deckWidth).^p;
 
 % these are the y-values (y runs longitudinally down the boat) we want to
 % create our mesh at.
-y = linspace(-0.106,0.106,50);  % meters (corresponds to an 8-inch long boat)
+y = linspace(-0.106,0.106,25);  % meters (corresponds to an 8-inch long boat)
 % the loftCurve tells us how much to raise (in the z-direction the cross
 % section (defined using the vertices in x and z) up.
 loftCurve = (2*y).^2;
@@ -26,7 +26,7 @@ loftCurve = (2*y).^2;
 % default, so we pass this matrix in to swap the axes back to what we want
 % and make the mesh in units of millimeters (better for 3d-printing)
 swapYandZAxesInMesh = 1000*[1 0 0 0;...
-                            0 0 1 0;...
+                            0 0 -1 0;...
                             0 1 0 0;...
                             0 0 0 1];
 
