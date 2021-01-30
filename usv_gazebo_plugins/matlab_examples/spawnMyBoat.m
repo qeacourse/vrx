@@ -15,7 +15,7 @@ Iyz = 0;
 Ixz = 0;
 
 num2strPrecision = 10;
-linearDrag = 20;
+linearDrag = 5;
 angularDrag = 5;
 
 T = stlread(stlFileName);
