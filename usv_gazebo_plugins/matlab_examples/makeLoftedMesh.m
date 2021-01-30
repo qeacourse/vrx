@@ -1,4 +1,4 @@
-function stl_file = makeLoftedMesh(x, y, deckHeight, Zs, loftCurve, visualize, finalVertexTransformation)
+function stl_file = makeLoftedMesh(x, y, deckHeight, Zs, loftCurve, visualize, finalVertexTransformation, stlCopyPath)
 if nargin < 6
     visualize = true;
 end
@@ -179,4 +179,8 @@ mkdir(modelDir);
 meshDir = fullfile(modelDir,'meshes');
 mkdir(meshDir);
 stlwrite(TR, fullfile(meshDir, stl_file));
+if nargin >= 8
+    stlwrite(TR, stlCopyPath);
+    stl_file = stlCopyPath;
+end
 end
