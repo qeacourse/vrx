@@ -122,6 +122,7 @@ if ~isnan(deckHeight)
             end
             vec1new = newPoints(4,:) - newPoints(3,:);
             vec2new = newPoints(2,:) - newPoints(3,:);
+            cpnew = cross(vec1new, vec2new);
             if sign(dot(cpnew,cp)/(norm(cpnew)*norm(cp))) == 1
                 newFaces(end+1,:) = [newPointsIds(3) newPointsIds(4) newPointsIds(2)];
             else
